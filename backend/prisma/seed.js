@@ -34,6 +34,8 @@ const createOrGetUser = async ({
 
             name,
 
+            password: hashedPassword,
+
             role,
 
             status: "ACTIVE"
