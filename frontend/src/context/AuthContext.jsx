@@ -7,6 +7,10 @@ import {
 
 const AuthContext = createContext();
 
+const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://quiz-platform-i3oc.onrender.com/api";
+
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
@@ -28,7 +32,7 @@ export const AuthProvider = ({ children }) => {
             try {
 
                 const response = await fetch(
-                    "http://localhost:5000/api/auth/profile",
+                    `${API_URL}/auth/profile`,
                     {
                         method: "GET",
                         headers: {
