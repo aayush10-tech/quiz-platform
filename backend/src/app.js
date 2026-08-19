@@ -17,7 +17,7 @@ import reportsRoutes from "./routes/reports.routes.js";
 import errorHandler from "./middleware/error.middleware.js";
 
 const app = express();
-
+app.set("trust proxy", 1);
 
 // =====================================================
 // SECURITY
