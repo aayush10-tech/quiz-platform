@@ -36,10 +36,15 @@ app.use(
 
 const allowedOrigins = [
 
-    process.env.FRONTEND_URL ||
-    "http://localhost:5173"
+    "http://localhost:5173",
 
-];
+    "http://127.0.0.1:5173",
+
+    "https://quiz-platform-website.onrender.com",
+
+    process.env.FRONTEND_URL
+
+].filter(Boolean);
 
 
 app.use(
@@ -47,10 +52,8 @@ app.use(
 
         origin: (origin, callback) => {
 
-            /*
-             * Allow requests without an Origin header.
-             * Useful for Postman/server-to-server requests.
-             */
+            // Allow requests without Origin
+            // such as Postman/server-to-server requests.
 
             if (!origin) {
 
@@ -74,6 +77,10 @@ app.use(
             }
 
 
+            console.error(
+                `CORS blocked origin: ${origin}`
+            );
+
             return callback(
                 new Error(
                     "CORS policy: Origin not allowed"
@@ -82,7 +89,21 @@ app.use(
 
         },
 
-        credentials: true
+        credentials: true,
+
+        methods: [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS"
+        ],
+
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization"
+        ]
 
     })
 );
@@ -141,14 +162,21 @@ app.use(
 // =====================================================
 
 const authLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20, // allow 20 login/register requests per minute
+
+    windowMs: 1 * 60 * 1000,
+
+    max: 20,
+
     standardHeaders: true,
+
     legacyHeaders: false,
+
     message: {
         success: false,
-        message: "Too many authentication attempts. Please try again later."
+        message:
+            "Too many authentication attempts. Please try again later."
     }
+
 });
 
 
